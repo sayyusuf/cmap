@@ -65,9 +65,9 @@ int	node_del_all(node_t *node, void (*del_key)(void *), void (*del_val)(void *))
 		node_del_all(node->high, del_key, del_val);
 	if (node->low != NULL)
 		node_del_all(node->low, del_key, del_val);
-	if (del_key)
+	if (del_key != NULL)
 		del_key(node->key);
-	if (del_val)
+	if (del_val != NULL)
 		del_val(node->value);
 	free(node);
 	return (0);
@@ -266,7 +266,7 @@ int	argm_destroy(argm_t *map, void (*del_key)(void *), void (*del_val)(void *))
 {
 	if (map == NULL)
 		return (-1);
-	if (node_del_all(map->first, del_key, del_val))
+	if (map->first != NULL && node_del_all(map->first, del_key, del_val) < 0)
 		return (-1);
 	free(map);
 	return (0);
@@ -286,4 +286,3 @@ argm_t	*argm_new(int (*compare)(void *, void *))
 	argm->compare = compare;
 	return (argm);
 }
-
