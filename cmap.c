@@ -1,13 +1,15 @@
 #include "cmap.h"
+#include <string.h>
 
-node_t *node_new(node_t *parent, void *key, void *value)
+node_t *node_new(void *key, void *value, size_t type_size)
 {
     node_t *node;
 
-    node = malloc(sizeof(*node));
+    node = malloc(sizeof(*node) + type_size);
     if (!node)
         return (node);
-    *node = (node_t){.high = NULL, .low = NULL, .key = key, .value = value, .parent = parent};
+    *node = (node_t){.high = NULL, .low = NULL, .key = key, .tsz = type_size};
+	memcpy(node->value, value, type_size);
     return (node);
 }
 
@@ -53,7 +55,7 @@ int	node_insert(node_t *node, node_t *new, int (*compare)(void*, void *))
 	return (0);
 }
 
-int node_find(node_t *node, void *key, int (*compare)(void*, void *), void **ret)
+int node_find(node_t *node, void *key, int (*compare)(void*, void *), void *ret)
 {
 	int	res;
 
@@ -61,7 +63,7 @@ int node_find(node_t *node, void *key, int (*compare)(void*, void *), void **ret
 		return (-1);
 	res = compare(node->key, key);
 	if (!res)
-        *ret = node->value;
+		memcpy(ret ,node->value, node->tsz);
 	else if (res > 0)
 		return (node_find(node->high, key, compare, ret));
 	else
@@ -188,12 +190,13 @@ void	*node_cut(node_t **nodep, void *key, int (*compare)(void*, void *))
 
 
 
-int cmap_new(cmap_t *map, int (*compare)(void *, void *))
+int cmap_new(cmap_t *map, int (*compare)(void *, void *), size_t type_size)
 {
     if (!map || !compare)
         return (-1);
     map->compare = compare;
     map->first = NULL;
+	map->tsz = type_size;
     return (0);
 }
 
@@ -206,13 +209,13 @@ int	cmap_destroy(cmap_t *map, void (*del_key)(void *), void (*del_val)(void *))
     return (0);
 }
 
-int	cmap_insert(cmap_t	*map, void *key, void *val)
+int	cmap_insert(cmap_t	*map, void *key, void *value_addr)
 {
     node_t  *new;
 
-    if (!map || !key || !val)
+    if (!map || !key || !value_addr)
         return (-1);
-    new = node_new(NULL, key, val);
+    new = node_new(key, value_addr, map->tsz);
     if (!new)
         return (-1);
     if (!map->first)
@@ -225,7 +228,7 @@ int	cmap_insert(cmap_t	*map, void *key, void *val)
     return (0);
 }
 
-int cmap_find(cmap_t* map, void *key, void **ret)
+int cmap_find(cmap_t* map, void *key, void *ret)
 {
     if (!map || !key || !ret)
         return (-1);
