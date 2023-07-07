@@ -1,6 +1,6 @@
-NAME = argm.a
+NAME = cmap.a
 
-_SRC = argm_lib.c
+_SRC = cmap.c
 
 _OBJ = $(_SRC:.c=.o)
 

@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "argm_lib.h": "c"
+        "argm_lib.h": "c",
+        "glib.h": "c"
     }
 }
