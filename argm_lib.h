@@ -1,3 +1,6 @@
+#ifndef CMAP_H
+#define CMAP_H
+
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -23,6 +26,9 @@ typedef struct argm_s
 
 int	argm_del(argm_t *map, void *key, void (*del_key)(void *), void (*del_val)(void *));
 void	*argm_find(argm_t *map, void *key);
+
 int	argm_insert(argm_t	*map, void *key, void *val);
 int	argm_destroy(argm_t *map, void (*del_key)(void *), void (*del_val)(void *));
 argm_t	*argm_new(int (*compare)(void *, void *));
+
+#endif
