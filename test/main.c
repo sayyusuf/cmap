@@ -8,7 +8,7 @@ int main()
     char *s = NULL;
 
     printf("basladik\n");
-    cmap_new(&map, strcmp, sizeof(char *), sizeof(char *));
+    cmap_new(&map, strcmp);
     cmap_insert(&map,"5", "beş");
     cmap_insert(&map,"1", "bir");
     cmap_insert(&map,"2", "iki");

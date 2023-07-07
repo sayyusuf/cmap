@@ -58,7 +58,7 @@ int node_find(node_t *node, void *key, int (*compare)(void*, void *), void **ret
 	int	res;
 
 	if (!node || !key || !compare)
-		return (NULL);
+		return (-1);
 	res = compare(node->key, key);
 	if (!res)
         *ret = node->value;
@@ -188,13 +188,11 @@ void	*node_cut(node_t **nodep, void *key, int (*compare)(void*, void *))
 
 
 
-int cmap_new(cmap_t *map, int (*compare)(void *, void *), size_t key_size, size_t value_size)
+int cmap_new(cmap_t *map, int (*compare)(void *, void *))
 {
-    if (!map || !compare || !key_size || !value_size)
+    if (!map || !compare)
         return (-1);
     map->compare = compare;
-    map->dsz = value_size;
-    map->ksz = key_size;
     map->first = NULL;
     return (0);
 }
@@ -241,7 +239,7 @@ int	cmap_erase(cmap_t *map, void *key, void (*del_key)(void *), void (*del_val)(
     
     if (!map || !key)
         return (-1);
-	ret = node_cut(&map->first, key, map->compare);
+    ret = node_cut(&map->first, key, map->compare);
 	if (!ret)
 		return (-1);
 	if (del_key)
