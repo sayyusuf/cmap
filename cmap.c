@@ -190,7 +190,7 @@ void	*node_cut(node_t **nodep, void *key, int (*compare)(void*, void *))
 
 
 
-int cmap_new(cmap_t *map, int (*compare)(void *, void *), size_t type_size)
+int cmap_init(cmap_t *map, int (*compare)(void *, void *), size_t type_size)
 {
     if (!map || !compare)
         return (-1);

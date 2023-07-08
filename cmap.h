@@ -23,7 +23,7 @@ typedef struct
 } cmap_t;
 
 
-int cmap_new(cmap_t *map, int (*compare)(void *, void *), size_t type_size);
+int cmap_init(cmap_t *map, int (*compare)(void *, void *), size_t type_size);
 int	cmap_destroy(cmap_t *map, void (*del_key)(void *), void (*del_val)(void *));
 
 int	cmap_insert(cmap_t *map, void *key, void *value_addr);

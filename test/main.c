@@ -16,7 +16,7 @@ int main()
 
 
     printf("begin\n");
-    cmap_new(&map, strcmp, sizeof(char *));
+    cmap_init(&map, strcmp, sizeof(char *));
     cmap_insert(&map,"5", &five);
     cmap_insert(&map,"1", &one);
     cmap_insert(&map,"2", &two);
