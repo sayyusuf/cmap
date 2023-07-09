@@ -29,6 +29,21 @@ int	node_del_all(node_t *node, void (*del_key)(void *), void (*del_val)(void *))
 	return (0);
 }
 
+int	node_iter(node_t *node, void *any,  void(*f)(void *key, void *val_addr, void *any))
+{
+	if (!node)
+		return (-1);
+	if (node->low)
+		node_iter(node->low, any, f);
+	if (node->high)
+		node_iter(node->high, any, f);
+	f(node->key, node->value, any);
+	return (0);
+}
+
+
+
+
 int	node_insert(node_t *node, node_t *new, int (*compare)(void*, void *))
 {
 	int	res;
@@ -250,5 +265,14 @@ int	cmap_erase(cmap_t *map, void *key, void (*del_key)(void *), void (*del_val)(
 	if (del_val)
 		del_val(ret->value);
 	free(ret);
+	return (0);
+}
+
+
+int	cmap_iter(cmap_t *map, void *any,  void(*f)(void *key, void *val_addr, void *any))
+{
+	if (!map || !f)
+		return (-1);
+	node_iter(map->first, any, f);
 	return (0);
 }

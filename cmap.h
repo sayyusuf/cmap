@@ -30,4 +30,6 @@ int	cmap_insert(cmap_t *map, void *key, void *value_addr);
 int cmap_find(cmap_t* map, void *key, void *ret);
 int	cmap_erase(cmap_t *map, void *key, void (*del_key)(void *), void (*del_val)(void *));
 
+int	cmap_iter(cmap_t *map, void *any,  void(*f)(void *key, void *val_addr, void *any));
+
 #endif
