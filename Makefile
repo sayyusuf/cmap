@@ -7,7 +7,7 @@ _OBJ = $(_SRC:.c=.o)
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror 
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean res test
 all: $(NAME)
 
 $(NAME): $(_OBJ)
@@ -22,3 +22,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+test:
+	echo "cmap test"
