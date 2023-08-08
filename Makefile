@@ -1,4 +1,4 @@
-NAME = cmap.a
+NAME = libcmap.a
 
 _SRC = cmap.c
 
