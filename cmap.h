@@ -1,35 +1,55 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef CMAP_H
 #define CMAP_H
 
-#include <stdlib.h>
-#include <stddef.h>
 #include <stdint.h>
 
+typedef uint64_t	cmap_key_t;
 
-typedef struct node_s
-{
-	void			*key;
-	struct node_s	*high;
-	struct node_s	*low;
-	size_t			tsz;
-	uint8_t			value[];
-} node_t;
+typedef struct node_s	node_t;
 
-typedef struct
+typedef struct cmap_s	cmap_t;
+
+typedef struct cmap_s
 {
 	node_t	*first;
+	size_t	ksz;
 	size_t	tsz;
-	int (*compare)(void *, void *);
+	int	(*cmp)(cmap_key_t, cmap_key_t);
 } cmap_t;
 
 
-int cmap_init(cmap_t *map, int (*compare)(void *, void *), size_t type_size);
-int	cmap_destroy(cmap_t *map, void (*del_key)(void *), void (*del_val)(void *));
+#define VAL_TO_KEY(val) ((cmap_key_t)(val))
+#define VAL_TO_PTR(val) ((void *)(val))
 
-int	cmap_insert(cmap_t *map, void *key, void *value_addr);
-int cmap_find(cmap_t* map, void *key, void *ret);
-int	cmap_erase(cmap_t *map, void *key, void (*del_key)(void *), void (*del_val)(void *));
+int
+cmap_init(cmap_t *map, int (*cmp)(cmap_key_t, cmap_key_t), size_t type_size);
 
-int	cmap_iter(cmap_t *map, void *any,  void(*f)(void *key, void *val_addr, void *any));
+int
+cmap_destroy(cmap_t *map, void (*del_key)(cmap_key_t), void (*del_val)(void *));
+
+
+int
+cmap_insert(cmap_t *map, cmap_key_t key, void *value_addr);
+
+int
+cmap_find(cmap_t* map, cmap_key_t key, void *ret);
+
+void	*
+cmap_ptr(cmap_t* map, cmap_key_t key);
+
+int
+cmap_erase(cmap_t *map, cmap_key_t key, void (*del_key)(cmap_key_t), void (*del_val)(void *));
+
+int
+cmap_iter(cmap_t *map, void *any,  void(*f)(cmap_key_t key, void *val_addr, void *any));
 
 #endif
+
+#ifdef __cplusplus
+ }
+#endif
+

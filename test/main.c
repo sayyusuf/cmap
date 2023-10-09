@@ -2,11 +2,18 @@
 #include  <string.h>
 #include "../cmap.h"
 
-void test(void *key, void *val_addr, void *any)
+void test(cmap_key_t key, void *val_addr, void *any)
 {
   const char *s = *((char **)val_addr);
 
-  printf("key: %s   val: %s\n", key, s);
+  printf("key: %s   val: %s\n", (char *)key, s);
+}
+
+void test2(cmap_key_t key, void *val_addr, void *any)
+{
+  const char *s = *((char **)val_addr);
+
+  printf("key: %ld   val: %s\n", key, s);
 }
 
 int main()
@@ -22,20 +29,39 @@ int main()
     const char *five = "five";
 
 
-    printf("begin\n");
-    cmap_init(&map, strcmp, sizeof(char *));
-    cmap_insert(&map,"5", &five);
-    cmap_insert(&map,"1", &one);
-    cmap_insert(&map,"2", &two);
+    printf("----begin ptr ----\n");
+    cmap_init(&map, (int (*)(cmap_key_t, cmap_key_t))strcmp, sizeof(char *));
+    cmap_insert(&map, VAL_TO_KEY("5"), &five);
+    cmap_insert(&map, VAL_TO_KEY("1"), &one);
+    cmap_insert(&map, VAL_TO_KEY("2"), &two);
 
-    cmap_erase(&map, "4", NULL, NULL);
-    cmap_insert(&map, "4", &four);
-    s = NULL; printf("res=%d  val= ", cmap_find(&map, "4", &s)); printf("%s\n", s);
+    cmap_erase(&map, VAL_TO_KEY("4"), NULL, NULL);
+    cmap_insert(&map, VAL_TO_KEY("4"), &four);
+    s = NULL; printf("res=%d  val= ", cmap_find(&map, VAL_TO_KEY("4"), &s)); printf("%s\n", s);
 
     cmap_iter(&map, NULL, test);
 
-    printf("end\n");
+    printf("---end ptr ---\n");
     cmap_destroy(&map, NULL, NULL);
+
+
+
+    printf("---begin num ----\n");
+    cmap_init(&map, NULL, sizeof(char *));
+    cmap_insert(&map, 5, &five);
+    cmap_insert(&map, 1, &one);
+    cmap_insert(&map, 2, &two);
+
+    cmap_erase(&map, 4, NULL, NULL);
+    cmap_insert(&map, 4, &four);
+    s = NULL; printf("res=%d  val= ", cmap_find(&map, 4, &s)); printf("%s\n", s);
+
+    cmap_iter(&map, NULL, test2);
+
+    printf("---end um ---\n");
+    cmap_destroy(&map, NULL, NULL);
+
+
 
     return (0);
 }

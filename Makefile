@@ -1,25 +1,36 @@
-NAME = libcmap.a
+NAME = libcmap
+NAME_AR = libcmap.a
+NAME_DYN = libcmap.so
 
 _SRC = cmap.c
 
 _OBJ = $(_SRC:.c=.o)
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror 
 
+
+
+CC = gcc
+ifndef CFLAGS
+	CFLAGS = -Wall -Wextra -Werror
+endif
 .PHONY: all clean fclean res test
 all: $(NAME)
 
-$(NAME): $(_OBJ)
+$(NAME): $(NAME_AR) $(NAME_DYN)
+
+$(NAME_DYN): $(_OBJ)
+	$(CC) -shared $^ -o $@
+
+$(NAME_AR): $(_OBJ)
 	ar -rcs $@ $^
 	ranlib $@
 %.o: %.c
-	$(CC)  $(FLAGS) -I./ -c $< -o $@
+	$(CC)  $(CFLAGS) -I./ -c $< -o $@
 
 clean : 
 	rm -f $(_OBJ)
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME).*
 
 re: fclean all
 
