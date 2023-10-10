@@ -1,18 +1,13 @@
 NAME = libcmap
-NAME_AR = libcmap.a
-NAME_DYN = libcmap.so
+NAME_AR = $(NAME).a
+NAME_DYN = $(NAME).so
 
 _SRC = cmap.c
 
 _OBJ = $(_SRC:.c=.o)
 
-
-
-
 CC = gcc
-ifndef CFLAGS
-	CFLAGS = -Wall -Wextra -Werror
-endif
+CFLAGS += -Wall -Wextra -Werror
 .PHONY: all clean fclean res test
 all: $(NAME)
 
