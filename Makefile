@@ -1,33 +1,21 @@
-NAME = libcmap
-NAME_AR = $(NAME).a
-NAME_DYN = $(NAME).so
+MODULE_NAME	= cmap
+NAME		= cmap
+_SRC		= cmap.c
+_INC		= cmap.h
+EXTRAFLAGS	+= -Wall -Wextra -Werror
+DEBUGFLAGS	+= -g -fsanitize=address
+EXLIBS +=			# -lm
 
-_SRC = cmap.c
 
-_OBJ = $(_SRC:.c=.o)
+#DEP1 =			# Dependent module's name
+#DEP1LINK =		# Dependent module's github link
 
-CC = gcc
-CFLAGS += -Wall -Wextra -Werror
-.PHONY: all clean fclean res test
-all: $(NAME)
+#DEP2 =
+#DEP2LINK =
 
-$(NAME): $(NAME_AR) $(NAME_DYN)
 
-$(NAME_DYN): $(_OBJ)
-	$(CC) -shared $^ -o $@
+#DEPS=	DEP1	\	# Names of all dependencies.
+#	DEP2	\
+#	DEP3
 
-$(NAME_AR): $(_OBJ)
-	ar -rcs $@ $^
-	ranlib $@
-%.o: %.c
-	$(CC)  $(CFLAGS) -I./ -c $< -o $@
-
-clean : 
-	rm -f $(_OBJ)
-fclean: clean
-	rm -f $(NAME).*
-
-re: fclean all
-
-test:
-	echo "cmap test"
+include modMakefile

@@ -11,12 +11,12 @@ extern "C" {
 
 typedef struct node_s
 {
-	struct node_s	*high;
-	struct node_s	*low;
-	size_t		tsz;
-	size_t		ksz;
-	cmap_key_t	key;
-	uint64_t	value[];
+	struct node_s		*high;
+	struct node_s		*low;
+	size_t			tsz;
+	size_t			ksz;
+	cmap_key_t		key;
+	unsigned long int	value[];
 } node_t;
 
 

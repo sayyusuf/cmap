@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 
-typedef uint64_t	cmap_key_t;
+typedef unsigned long int	cmap_key_t;
 
 typedef struct node_s	node_t;
 
@@ -52,4 +52,5 @@ cmap_iter(cmap_t *map, void *any,  void(*f)(cmap_key_t key, void *val_addr, void
 #ifdef __cplusplus
  }
 #endif
+
 
